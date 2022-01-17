@@ -1,13 +1,14 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "postgres",
   "port": 5432,
   "password": "supersecret",
+  "username": "local_user",
   "database": "movies",
-  "entities": ["./src/models/*.ts"],
+  "entities": ["./dist/models/*.js"],
   "logging": true,
-  "migrations": ["./src/migrations/*.ts"],
+  "migrations": ["./migrations/*.ts"],
   "cli": {
-      "migrationsDir": "./src/migrations"
+      "migrationsDir": "migrations"
   }
 }

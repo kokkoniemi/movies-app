@@ -2,7 +2,6 @@ import './utils/env';
 import 'reflect-metadata'; // TypeORM needs reflect-metadata shim
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import { createConnection } from 'typeorm';
 
 import { expressLogger, logger } from './utils/logs';
@@ -24,7 +23,8 @@ const initializeExpress = () => {
   };
 
   app.use(cors(corsOptions));
-  app.use(bodyParser.json()); // TODO: DEPRECATED!
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(expressLogger);
 
   router.use('/movies', movieRouter);

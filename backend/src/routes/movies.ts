@@ -19,17 +19,21 @@ router.get('/', async (req: Request, res: Response, next: NextFunction): Promise
       ? pageLengt : parseInt(query.limit as string, 10);
     const q = query.q || null;
 
-    const count = await getRepository(Movie).count();
+    const searchOptions = {
+      ...(q ? {
+        where: [
+          { name: ILike(`%${q}%`) }, // TODO: POSSIBLE SQL INJECTION?
+          { synopsis: ILike(`%${q}%`) },
+        ],
+      } : {}),
+    };
+
+    const count = await getRepository(Movie).count(searchOptions);
     const movies = await getRepository(Movie).find({
       skip: offset,
       take: limit,
       relations: ['director', 'actors', 'genres'],
-      ...(q ? { // search functionalities
-        where: [
-          { name: ILike(`%${q}%`) },
-          { synopsis: ILike(`%${q}%`) }
-        ],
-      } : {})
+      ...searchOptions,
     });
 
     res.send({
@@ -70,7 +74,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction): Promis
 /**
  * Delete a movie
  */
-router.delete(`/:movieId`, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.delete('/:movieId', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     await getRepository(Movie).delete(req.params.movieId);
     res.sendStatus(204);

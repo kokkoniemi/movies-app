@@ -8,15 +8,15 @@ const {
 /**
  * LIST validator
  */
- const listingSchema = object.keys({
+const listingSchema = object.keys({
   offset: number
-      .min(0)
-      .max(99999999),
+    .min(0)
+    .max(99999999),
   limit: number
-      .min(1)
-      .max(50),
+    .min(1)
+    .max(50),
   q: string
-      .min(3)
+    .min(3),
 });
 
 export async function validateListingRequest(body: ParsedQs): Promise<any> {

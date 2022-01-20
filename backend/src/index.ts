@@ -24,7 +24,7 @@ const initializeExpress = () => {
   };
 
   app.use(cors(corsOptions));
-  app.use(bodyParser.json());
+  app.use(bodyParser.json()); // TODO: DEPRECATED!
   app.use(expressLogger);
 
   router.use('/movies', movieRouter);

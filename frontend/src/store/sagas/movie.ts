@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  all, call, put, takeLatest,
+  call, put, takeLatest, delay,
 } from 'redux-saga/effects';
 import {
   ListMoviesSuccessPayload, Movie, Data, ListMoviesRequest,
@@ -16,6 +16,7 @@ const movieApi = {
 
 function* listMoviesSaga(action: ListMoviesRequest): any {
   try {
+    yield delay(200);
     const pageLength = 5;
     const offset = ((action.payload?.page || 1) - 1) * pageLength;
     const q = action.payload?.q || null;
@@ -36,7 +37,7 @@ function* listMoviesSaga(action: ListMoviesRequest): any {
 }
 
 function* movieSaga() {
-  yield all([takeLatest(ActionTypes.LIST_MOVIES_REQUEST, listMoviesSaga)]);
+  yield takeLatest(ActionTypes.LIST_MOVIES_REQUEST, listMoviesSaga);
 }
 
 export default movieSaga;
